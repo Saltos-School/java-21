@@ -9,6 +9,8 @@ public class HolaCadenas {
         String cadenaConcatenada1 = "Cadena1: " + cadena1 + ", Numero1: " + numero1;
         String cadenaConcatenada2 = STR."Cadena1: \{cadena1}, Numero1: \{numero1}";
         String cadenaConcatenada3 = String.format("Cadena1: %s, Numero1: %d\n", cadena1, numero1);
+        String cadenaContatenada4 = ("Cadena %s " +
+                "%d").formatted(cadena1, numero1);
         String cadenaSimple = "Hola2\n    Paul  \n\"Erica\"\nCarlos";
         String cadenaEnBloque = """
                 Hola2
