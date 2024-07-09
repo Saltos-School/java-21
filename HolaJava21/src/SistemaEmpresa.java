@@ -1,7 +1,9 @@
 enum TipoEmpleado {
     FIJO,
     AUTONOMO,
-    BECARIO
+    BECARIO,
+    MEDIO_TIEMPO,
+    TIEMPO_EXTRA
 }
 
 interface Empleado {
@@ -42,7 +44,28 @@ class Becario implements Empleado {
     }
 }
 
+class MedioTiempo implements Empleado {
+    public String nombre() {
+        return "Susana Medio Tiempo";
+    }
+
+    @Override
+    public TipoEmpleado tipoEmpleado() {
+        return TipoEmpleado.MEDIO_TIEMPO;
+    }
+}
+
 class Pagos {
+
+    public static int calcularMontoAPagar(TipoEmpleado tipoEmpleado) {
+        return switch (tipoEmpleado) {
+            case FIJO -> 5000;
+            case AUTONOMO -> 4000;
+            case BECARIO -> 15000;
+            case MEDIO_TIEMPO -> 7000;
+            case TIEMPO_EXTRA -> 20000;
+        };
+    }
 
     public static void pagar(Empleado empleado) {
         System.out.println("Pagando a " + empleado.nombre());
@@ -59,6 +82,10 @@ class Pagos {
                 var becario = (Becario) empleado;
                 System.out.println("Pago de " + 15000 + " a " + becario.nombre());
             }
+            case MEDIO_TIEMPO -> {
+                var medioTiempo = (MedioTiempo) empleado;
+                System.out.println("Pago de " + 7000 + " a " + medioTiempo.nombre());
+            }
         }
     }
 
@@ -70,9 +97,11 @@ public class SistemaEmpresa {
         var fijo = new Fijo();
         var autonomo = new Autonomo();
         var becario = new Becario();
+        var medioTiempo = new MedioTiempo();
         Pagos.pagar(fijo);
         Pagos.pagar(autonomo);
         Pagos.pagar(becario);
+        Pagos.pagar(medioTiempo);
     }
 
 }
