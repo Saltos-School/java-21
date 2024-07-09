@@ -46,15 +46,19 @@ class Pagos {
 
     public static void pagar(Empleado empleado) {
         System.out.println("Pagando a " + empleado.nombre());
-        if (empleado instanceof Fijo fijo) {
-            System.out.println("Pago de " + 5000 + " a " + fijo.nombre());
-        } else if (empleado instanceof Autonomo autonomo) {
-            System.out.println("Pago de " + 4000 + " a " + autonomo.nombre());
-        } else if (empleado instanceof Becario becario) {
-            System.out.println("Pago de " + 15000 + " a " + becario.nombre());
-        } else {
-            throw new IllegalArgumentException(
-                    "Tipo de empleado no soportado " + empleado.getClass().getSimpleName());
+        switch (empleado.tipoEmpleado()) {
+            case FIJO -> {
+                var fijo = (Fijo) empleado;
+                System.out.println("Pago de " + 5000 + " a " + fijo.nombre());
+            }
+            case AUTONOMO -> {
+                var autonomo = (Autonomo) empleado;
+                System.out.println("Pago de " + 4000 + " a " + autonomo.nombre());
+            }
+            case BECARIO -> {
+                var becario = (Becario) empleado;
+                System.out.println("Pago de " + 15000 + " a " + becario.nombre());
+            }
         }
     }
 
