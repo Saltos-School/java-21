@@ -1,9 +1,10 @@
 import java.util.Vector;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.IntStream;
 
 public class HolaVirtualThreads {
 
-    public static void main(String[] args) {
+    public static void hilosTradicionales() {
         var inicio = System.currentTimeMillis();
         var hilos = new Vector<Thread>(5);
         final int j = 20;
@@ -41,5 +42,13 @@ public class HolaVirtualThreads {
         System.out.println("El total2 es " + total2);
         var fin = System.currentTimeMillis();
         System.out.printf("Tiempo total %dms", fin - inicio);
+    }
+
+    public static void main(String[] args) {
+        IntStream.rangeClosed(1, 5).boxed().map(i -> {
+           var thread = new Thread(() -> System.out.println("Ejecutando hilo " + i));
+           thread.start();
+           return thread;
+        });
     }
 }
