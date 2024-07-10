@@ -79,7 +79,7 @@ public class HolaVirtualThreads {
         var inicio = System.currentTimeMillis();
         var hilos = IntStream.range(0, 1000000)
                 .boxed()
-                .map(i -> Thread.ofPlatform().start(() -> Math.sqrt(Math.pow(Math.random(), i))))
+                .map(i -> Thread.ofVirtual().start(() -> Math.sqrt(Math.pow(Math.random(), i))))
                 .toList();
         for (var hilo : hilos) {
             try {
