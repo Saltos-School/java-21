@@ -44,11 +44,52 @@ public class HolaVirtualThreads {
         System.out.printf("Tiempo total %dms", fin - inicio);
     }
 
-    public static void main(String[] args) {
-        IntStream.rangeClosed(1, 5).boxed().map(i -> {
-           var thread = new Thread(() -> System.out.println("Ejecutando hilo " + i));
+    public static void hilosConStreams() {
+        var inicio = System.currentTimeMillis();
+        var hilos = IntStream.rangeClosed(1, 5).boxed().map(i -> {
+           var thread = new Thread(() -> {
+               try {
+                   Thread.sleep(1000);
+               } catch (InterruptedException e) {
+                   throw new RuntimeException(e);
+               }
+               System.out.println("Ejecutando hilo " + i);
+           });
            thread.start();
            return thread;
+        }).toList();
+        hilos.forEach(t -> {
+            try {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                t.join();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         });
+        System.out.println("Continuando");
+        var fin = System.currentTimeMillis();
+        System.out.printf("Tiempo total %dms", fin - inicio);
     }
+
+    public static void main(String[] args) {
+        var inicio = System.currentTimeMillis();
+        var hilos = IntStream.range(0, 50000)
+                .boxed()
+                .map(i -> Thread.ofPlatform().start(() -> Math.sqrt(Math.pow(Math.random(), i))))
+                .toList();
+        for (var hilo : hilos) {
+            try {
+                hilo.join();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        var fin = System.currentTimeMillis();
+        System.out.printf("Tiempo total %dms", fin - inicio);
+    }
+
 }
