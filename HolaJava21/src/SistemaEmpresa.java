@@ -1,69 +1,39 @@
 sealed interface Empleado permits Fijo, Autonomo, Becario, MedioTiempo, TiempoExtra {
     String nombre();
+    int edad();
 }
 
-non-sealed class Fijo implements Empleado {
-    public String nombre() {
-        return "Pepe Fijo";
-    }
+record Fijo(String nombre, int edad) implements Empleado {
 }
 
-class FijoEspecial extends Fijo {
-    @Override
-    public String nombre() {
-        return "Andreita Fija Especial";
-    }
+record Autonomo(String nombre, int edad) implements Empleado {
 }
 
-final class Autonomo implements Empleado {
-    public String nombre() {
-        return "María Autonoma";
-    }
+record Becario(String nombre, int edad) implements Empleado {
 }
 
-final class Becario implements Empleado {
-    public String nombre() {
-        return "Andrés Becario";
-    }
+record MedioTiempo(String nombre, int edad) implements Empleado {
 }
 
-final class MedioTiempo implements Empleado {
-    public String nombre() {
-        return "Susana Medio Tiempo";
-    }
-}
-
-final class TiempoExtra implements Empleado {
-    public String nombre() {
-        return "Juanita Tiempo Extra";
-    }
+record TiempoExtra(String nombre, int edad) implements Empleado {
 }
 
 class Pagos {
 
     public static void pagar(Empleado empleado) {
         System.out.println("Pagando a " + empleado.nombre());
-        var hola = 2;
-        switch (hola) {
-            case 0 ->
-                System.out.println("Cero");
-            case 1 ->
-                System.out.println("Uno");
-            case 2 ->
-                    System.out.println("Muy grande");
-            case 3 ->
-                System.out.println("Muy grande");
-        }
-
         switch (empleado) {
-            case FijoEspecial fijoEspecial -> {
-                System.out.println("Pago de " + 7500 + " a " + fijoEspecial.nombre());
+            case Fijo(var nombre, _) when nombre.contains("Pepe") -> {
+                System.out.println("Pago de " + 50000 + " a " + nombre);
             }
-            case Fijo fijo -> {
-                System.out.println("Pago de " + 5000 + " a " + fijo.nombre());
+            case Fijo(String nombre, _) -> {
+                System.out.println("Pago de " + 5000 + " a " + nombre);
             }
-            case Autonomo autonomo -> {
-                System.out.println("Pago de " + 4000 + " a " + autonomo.nombre());
+            case Autonomo(var nombre, var edad) when edad >= 50 -> {
+                System.out.println("Pago de " + 8000 + " a " + nombre + " con edad " + edad);
+            }
+            case Autonomo(var nombre, var edad) -> {
+                System.out.println("Pago de " + 4000 + " a " + nombre + " con edad " + edad);
             }
             case Becario becario -> {
                 System.out.println("Pago de " + 15000 + " a " + becario.nombre());
@@ -82,18 +52,16 @@ class Pagos {
 public class SistemaEmpresa {
 
     public static void main(String[] args) {
-        var fijo = new Fijo();
-        var autonomo = new Autonomo();
-        var becario = new Becario();
-        var medioTiempo = new MedioTiempo();
-        var tiempoExtra = new TiempoExtra();
-        var fijoEspecial = new FijoEspecial();
+        var fijo = new Fijo("Pepe Fijo", 50);
+        var autonomo = new Autonomo("María Autonoma", 20);
+        var becario = new Becario("Andrés Becario", 25);
+        var medioTiempo = new MedioTiempo("Susana Medio Tiempo", 40);
+        var tiempoExtra = new TiempoExtra("Juanita Tiempo Extra", 30);
         Pagos.pagar(fijo);
         Pagos.pagar(autonomo);
         Pagos.pagar(becario);
         Pagos.pagar(medioTiempo);
         Pagos.pagar(tiempoExtra);
-        Pagos.pagar(fijoEspecial);
     }
 
 }
