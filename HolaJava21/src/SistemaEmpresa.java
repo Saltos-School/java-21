@@ -2,9 +2,16 @@ sealed interface Empleado permits Fijo, Autonomo, Becario, MedioTiempo, TiempoEx
     String nombre();
 }
 
-final class Fijo implements Empleado {
+non-sealed class Fijo implements Empleado {
     public String nombre() {
         return "Pepe Fijo";
+    }
+}
+
+class FijoEspecial extends Fijo {
+    @Override
+    public String nombre() {
+        return "Andreita Fija Especial";
     }
 }
 
@@ -36,7 +43,22 @@ class Pagos {
 
     public static void pagar(Empleado empleado) {
         System.out.println("Pagando a " + empleado.nombre());
+        var hola = 2;
+        switch (hola) {
+            case 0 ->
+                System.out.println("Cero");
+            case 1 ->
+                System.out.println("Uno");
+            case 2 ->
+                    System.out.println("Muy grande");
+            case 3 ->
+                System.out.println("Muy grande");
+        }
+
         switch (empleado) {
+            case FijoEspecial fijoEspecial -> {
+                System.out.println("Pago de " + 7500 + " a " + fijoEspecial.nombre());
+            }
             case Fijo fijo -> {
                 System.out.println("Pago de " + 5000 + " a " + fijo.nombre());
             }
@@ -65,11 +87,13 @@ public class SistemaEmpresa {
         var becario = new Becario();
         var medioTiempo = new MedioTiempo();
         var tiempoExtra = new TiempoExtra();
+        var fijoEspecial = new FijoEspecial();
         Pagos.pagar(fijo);
         Pagos.pagar(autonomo);
         Pagos.pagar(becario);
         Pagos.pagar(medioTiempo);
         Pagos.pagar(tiempoExtra);
+        Pagos.pagar(fijoEspecial);
     }
 
 }
