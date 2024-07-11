@@ -29,8 +29,23 @@ public class HolaPlantillasDeCadenas {
                 }
         );
 
-        var s4 = PAUL."Esto es una prueba";
+        var s4 = PAUL."Esto es una prueba \{numero}";
         System.out.println(s4);
+
+        record Persona(String nombre, String apellido) {};
+
+        var P = StringTemplate.Processor.of(
+                (StringTemplate st) -> {
+                    var cadena = st.interpolate();
+                    var partes = cadena.split(",");
+                    var nombre = partes[0];
+                    var apellido = partes[1];
+                    return new Persona(nombre, apellido);
+                }
+        );
+
+        var paul = P."Paúl, Saltos";
+        System.out.println(paul);
     }
 
 }
