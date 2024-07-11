@@ -1,3 +1,5 @@
+import java.util.Optional;
+
 record Punto(int x, int y) {
 
     Punto {
@@ -34,6 +36,27 @@ public class HolaRegistros {
         System.out.printf("Punto %d, %d\n", punto.x(), punto.y());
         System.out.printf("Distancia al origen %s\n", punto.distancia(origen));
         System.out.printf("Distancia al origen %s\n", distancia(punto, origen));
+
+        var PUNTO = StringTemplate.Processor.of(
+                (StringTemplate st) -> {
+                    var cadena = st.interpolate();
+                    var partes = cadena.split(" ");
+                    if (partes.length != 2) {
+                        throw new IllegalArgumentException("Formato inválido");
+                    }
+                    try {
+                        var x = Integer.parseInt(partes[0].trim());
+                        var y = Integer.parseInt(partes[1].trim());
+                        return new Punto(x, y);
+                    } catch (NumberFormatException e) {
+                        throw new IllegalArgumentException("Las coordenadas del punto tienen que ser numeros enteros");
+                    }
+                }
+        );
+
+        var puntoNuevo = PUNTO."20 30";
+        System.out.println(puntoNuevo);
+
     }
 
 }
