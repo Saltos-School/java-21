@@ -8,6 +8,10 @@ public class HolaGarbageCollectors {
     private static Map<String, String> stringContainer = new HashMap<>();
 
     public static void main(String[] args) {
+
+        // Version optimizada
+        //var sb = new StringBuilder(1_000_000);
+
         var sb = new StringBuilder();
 
         for (int i = 0; i < 1_000_000; i++) {
@@ -16,9 +20,15 @@ public class HolaGarbageCollectors {
 
         var muestra = sb.toString();
 
-        var max = 10_000;
+        var max = 3_500;
 
         Supplier<String> generarNuevaCadena = () -> {
+            // Version optimizada
+            // return muestra + (Math.round(Math.random() * max));
+
+            // Version optimizada alternativa
+            // var sbNuevaCadena = new StringBuilder(1_000_100);
+
             var sbNuevaCadena = new StringBuilder();
             sbNuevaCadena.append(muestra);
             sbNuevaCadena.append(Math.round(Math.random() * max));
