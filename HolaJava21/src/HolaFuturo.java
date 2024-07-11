@@ -25,14 +25,19 @@ public class HolaFuturo {
             }
         });
 
-        var f3 = f2.thenApplyAsync(valor -> valor * 10);
+        var f2controlado = f2.exceptionallyAsync(e -> {
+            System.err.println("El futuro 2 ha fallado por: " + e.getMessage());
+            return 0.0;
+        });
+
+        var f3 = f2controlado.thenApplyAsync(valor -> valor * 10);
         Thread.sleep(100);
         switch (f3.state()) {
             case RUNNING -> {
                 System.out.println("No se ha completado el futuro 3 todavía");
             }
             case SUCCESS -> {
-                System.out.println(f2.get());
+                System.out.println(f3.get());
             }
             case FAILED -> {
                 System.err.println("El futuro 3 ha fallado");
