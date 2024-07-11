@@ -38,10 +38,17 @@ public class HolaPlantillasDeCadenas {
                 (StringTemplate st) -> {
                     var cadena = st.interpolate();
                     var partes = cadena.split(",");
+                    if (partes.length != 3) {
+                        throw new IllegalArgumentException("Formato inválido");
+                    }
                     var nombre = partes[0].trim();
                     var apellido = partes[1].trim();
-                    var edad = Integer.parseInt(partes[2].trim());
-                    return new Persona(nombre, apellido, edad);
+                    try {
+                        var edad = Integer.parseInt(partes[2].trim());
+                        return new Persona(nombre, apellido, edad);
+                    } catch (NumberFormatException e) {
+                        throw new IllegalArgumentException("La edad tiene que ser un entero");
+                    }
                 }
         );
 
