@@ -16,34 +16,31 @@ public class HolaFuturo {
         Thread.sleep(100);
         System.out.println(f1.get());
 
-        var f2 = CompletableFuture.supplyAsync(() -> {
+        var resultado = CompletableFuture.supplyAsync(() -> {
             var numero = Math.random();
             if (numero < 0.5) {
                 return numero;
             } else {
                 throw new IllegalStateException("Numero muy grande");
             }
-        });
-
-        var f2controlado = f2.exceptionallyAsync(e -> {
+        }).exceptionallyAsync(e -> {
             System.err.println("El futuro 2 ha fallado por: " + e.getMessage());
             return 0.0;
-        });
+        }).thenApplyAsync(valor -> valor * 10);
 
-        var f3 = f2controlado.thenApplyAsync(valor -> valor * 10);
         Thread.sleep(100);
-        switch (f3.state()) {
+        switch (resultado.state()) {
             case RUNNING -> {
-                System.out.println("No se ha completado el futuro 3 todavía");
+                System.out.println("No se ha completado el futuro todavía");
             }
             case SUCCESS -> {
-                System.out.println(f3.get());
+                System.out.println(resultado.get());
             }
             case FAILED -> {
-                System.err.println("El futuro 3 ha fallado");
+                System.err.println("El futuro ha fallado");
             }
             case CANCELLED -> {
-                System.err.println("El futuro 3 ha sido cancelado");
+                System.err.println("El futuro ha sido cancelado");
             }
         }
     }
