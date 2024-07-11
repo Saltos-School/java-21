@@ -32,19 +32,20 @@ public class HolaPlantillasDeCadenas {
         var s4 = PAUL."Esto es una prueba \{numero}";
         System.out.println(s4);
 
-        record Persona(String nombre, String apellido) {};
+        record Persona(String nombre, String apellido, int edad) {};
 
         var P = StringTemplate.Processor.of(
                 (StringTemplate st) -> {
                     var cadena = st.interpolate();
                     var partes = cadena.split(",");
-                    var nombre = partes[0];
-                    var apellido = partes[1];
-                    return new Persona(nombre, apellido);
+                    var nombre = partes[0].trim();
+                    var apellido = partes[1].trim();
+                    var edad = Integer.parseInt(partes[2].trim());
+                    return new Persona(nombre, apellido, edad);
                 }
         );
 
-        var paul = P."Paúl, Saltos";
+        var paul = P."Paúl, Saltos, 48";
         System.out.println(paul);
     }
 
